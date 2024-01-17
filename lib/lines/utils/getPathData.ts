@@ -1,5 +1,6 @@
 interface GetPathDataProps {
   from?: {
+    id: string,
     rect: DOMRect | undefined
   }
   to?: {

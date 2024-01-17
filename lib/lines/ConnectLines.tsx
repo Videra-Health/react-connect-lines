@@ -22,7 +22,10 @@ type PointsData = (
       color: string | undefined
       edge: Edge
       stroke: Stroke
-      d: string
+      d: string,
+      id: string,
+      toId: string | undefined,
+      fromId: string | undefined
     }
   | undefined
 )[]
@@ -100,6 +103,8 @@ export function ConnectLines(props: ConnectLinesProps) {
              * Return the path (d) together with other relevant data such as color, stroke, edge.
              */
             return {
+              fromId: from?.id,
+              toId: to?.id,
               d: path,
               ...to,
             }
@@ -213,7 +218,7 @@ export function ConnectLines(props: ConnectLinesProps) {
         {pointsData?.map((p) => {
           return (
             <path
-              id="p1"
+              id={`${p?.fromId}-${p?.toId}`}
               d={p?.d}
               fill="none"
               key={p?.d}
