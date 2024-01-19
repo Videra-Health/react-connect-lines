@@ -6,6 +6,9 @@ interface GetPathDataProps {
   to?: {
     rect: DOMRect | undefined
   }
+  root?: {
+    rect: DOMRect | undefined
+  }
 }
 
 const LINE_OFFSET = 9
@@ -29,11 +32,12 @@ function getPosition(props: {from: DOMRect; to: DOMRect}) {
 }
 
 export function getPathData(props: GetPathDataProps) {
-  const {from, to} = props
+  const {from, to, root} = props
   const fromRect = from?.rect
   const toRect = to?.rect
+  const rootRect = root?.rect
 
-  if (!fromRect || !toRect) return
+  if (!fromRect || !toRect || !rootRect) return
 
   const position = getPosition({from: fromRect, to: toRect})
 
@@ -41,20 +45,20 @@ export function getPathData(props: GetPathDataProps) {
     case 'bottom-to-top': {
       return [
         {
-          x: fromRect?.left + fromRect.width / 2,
-          y: fromRect?.bottom,
+          x: fromRect?.left + fromRect.width / 2 - rootRect?.left,
+          y: fromRect?.bottom - rootRect?.top,
         },
         {
-          x: fromRect?.left + fromRect.width / 2,
-          y: fromRect.bottom - (fromRect.bottom - toRect.top) / 2,
+          x: fromRect?.left + fromRect.width / 2 - rootRect?.left,
+          y: fromRect.bottom - (fromRect.bottom - toRect.top) / 2 - rootRect?.top,
         },
         {
-          x: toRect?.left + toRect.width / 2,
-          y: fromRect.bottom - (fromRect.bottom - toRect.top) / 2,
+          x: toRect?.left + toRect.width / 2 - rootRect?.left,
+          y: fromRect.bottom - (fromRect.bottom - toRect.top) / 2 - rootRect?.top,
         },
         {
-          x: toRect?.left + toRect.width / 2,
-          y: toRect.top - LINE_OFFSET,
+          x: toRect?.left + toRect.width / 2 - rootRect?.left,
+          y: toRect.top - LINE_OFFSET - rootRect?.top,
         },
       ]
     }
@@ -62,20 +66,20 @@ export function getPathData(props: GetPathDataProps) {
     case 'top-to-bottom': {
       return [
         {
-          x: fromRect?.left + fromRect.width / 2,
-          y: fromRect?.top,
+          x: fromRect?.left + fromRect.width / 2 - rootRect?.left,
+          y: fromRect?.top - rootRect?.top,
         },
         {
-          x: fromRect?.left + fromRect.width / 2,
-          y: fromRect.top - (fromRect.top - toRect.bottom) / 2,
+          x: fromRect?.left + fromRect.width / 2 - rootRect?.left,
+          y: fromRect.top - (fromRect.top - toRect.bottom) / 2 - rootRect?.top,
         },
         {
-          x: toRect?.left + toRect.width / 2,
-          y: fromRect.top - (fromRect.top - toRect.bottom) / 2,
+          x: toRect?.left + toRect.width / 2 - rootRect?.left,
+          y: fromRect.top - (fromRect.top - toRect.bottom) / 2 - rootRect?.top,
         },
         {
-          x: toRect?.left + toRect.width / 2,
-          y: toRect.bottom + LINE_OFFSET,
+          x: toRect?.left + toRect.width / 2 - rootRect?.left,
+          y: toRect.bottom + LINE_OFFSET - rootRect?.top,
         },
       ]
     }
@@ -83,20 +87,20 @@ export function getPathData(props: GetPathDataProps) {
     case 'right-to-left': {
       return [
         {
-          x: fromRect?.left,
-          y: fromRect?.bottom - fromRect.height / 2,
+          x: fromRect?.left - rootRect?.left,
+          y: fromRect?.bottom - fromRect.height / 2 - rootRect?.top,
         },
         {
-          x: (toRect.right + fromRect.left) / 2,
-          y: fromRect?.bottom - fromRect.height / 2,
+          x: (toRect.right + fromRect.left) / 2 - rootRect?.left,
+          y: fromRect?.bottom - fromRect.height / 2 - rootRect?.top,
         },
         {
-          x: (toRect.right + fromRect.left) / 2,
-          y: toRect.top + toRect.height / 2,
+          x: (toRect.right + fromRect.left) / 2 - rootRect?.left,
+          y: toRect.top + toRect.height / 2 - rootRect?.top,
         },
         {
-          x: toRect.right + LINE_OFFSET,
-          y: toRect.top + toRect.height / 2,
+          x: toRect.right + LINE_OFFSET - rootRect?.left,
+          y: toRect.top + toRect.height / 2 - rootRect?.top,
         },
       ]
     }
@@ -104,20 +108,20 @@ export function getPathData(props: GetPathDataProps) {
     case 'left-to-right': {
       return [
         {
-          x: fromRect?.right,
-          y: fromRect?.bottom - fromRect.height / 2,
+          x: fromRect?.right - rootRect?.left,
+          y: fromRect?.bottom - fromRect.height / 2 - rootRect?.top,
         },
         {
-          x: (toRect.left + fromRect.right) / 2,
-          y: fromRect?.bottom - fromRect.height / 2,
+          x: (toRect.left + fromRect.right) / 2 - rootRect?.left,
+          y: fromRect?.bottom - fromRect.height / 2 - rootRect?.top,
         },
         {
-          x: (toRect.left + fromRect.right) / 2,
-          y: toRect.top + toRect.height / 2,
+          x: (toRect.left + fromRect.right) / 2 - rootRect?.left,
+          y: toRect.top + toRect.height / 2 - rootRect?.top,
         },
         {
-          x: toRect.left - LINE_OFFSET,
-          y: toRect.top + toRect.height / 2,
+          x: toRect.left - LINE_OFFSET - rootRect?.left,
+          y: toRect.top + toRect.height / 2 - rootRect?.top,
         },
       ]
     }

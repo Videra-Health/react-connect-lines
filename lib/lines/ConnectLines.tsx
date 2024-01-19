@@ -38,6 +38,7 @@ export function ConnectLines(props: ConnectLinesProps) {
   const [pointsData, setPointsData] = useState<PointsData>(EMPTY_ARRAY)
   const [isInteracting, setIsInteracting] = useState<boolean>(false)
   const {elements} = props
+  const svgRef = useRef<any>(null);
   const raf = useRef<number>()
 
   /**
@@ -85,7 +86,7 @@ export function ConnectLines(props: ConnectLinesProps) {
              * The `getPathData` function returns an array of objects with
              * x and y coordinates for the line.
              */
-            const pathData = getPathData({from: from, to: to})
+            const pathData = getPathData({from: from, to: to, root: {rect: svgRef.current.getBoundingClientRect()}})
 
             if (!pathData) return
 
@@ -196,7 +197,7 @@ export function ConnectLines(props: ConnectLinesProps) {
 
   return useMemo(
     () => (
-      <svg style={SVG_STYLE}>
+      <svg style={SVG_STYLE} ref={svgRef}>
         {colors?.map((c) => (
           <defs key={c}>
             <marker
