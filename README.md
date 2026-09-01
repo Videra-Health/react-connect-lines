@@ -1,3 +1,5 @@
+[![AI Review Policy: Autonomous](https://img.shields.io/badge/AI%20Review%20Policy-%E2%9A%A1%20Autonomous-1F883D?style=flat-square&labelColor=24292f)](https://app.superthread.com/viderahealth/page-930-ai-development-policy)
+
 <img width="955" alt="Screenshot 2022-07-04 at 18 35 43" src="https://user-images.githubusercontent.com/15094168/177193245-df61cce5-c07e-443b-bd10-aa746ac19322.png">
 
 ## React connect lines
